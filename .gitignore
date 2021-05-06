@@ -70,6 +70,7 @@ __pycache__
 pip-log.txt
 
 # dev
+.vscode
 .idea
 .coverage
 docs/_build/

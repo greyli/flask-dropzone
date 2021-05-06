@@ -21,7 +21,7 @@ def get_url(endpoint_or_url, **kwargs):
         return url_for(endpoint_or_url, **kwargs)
 
 
-#: generate a random filename, replacement for werkzeug.secure_filename
+# generate a random filename, replacement for werkzeug.secure_filename
 def random_filename(old_filename):
     ext = os.path.splitext(old_filename)[1]
     new_filename = uuid.uuid4().hex + ext

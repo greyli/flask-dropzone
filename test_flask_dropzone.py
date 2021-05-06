@@ -61,6 +61,7 @@ class DropzoneTestCase(unittest.TestCase):
     def test_load_css(self):
         rv = self.dropzone.load_css()
         self.assertIn('dropzone.min.css', rv)
+        self.assertIn('latest', rv)
 
         rv = self.dropzone.load_css(version='5.1.0')
         self.assertIn('dropzone.min.css', rv)
@@ -69,6 +70,7 @@ class DropzoneTestCase(unittest.TestCase):
     def test_load_js(self):
         rv = self.dropzone.load_js()
         self.assertIn('dropzone.min.js', rv)
+        self.assertIn('latest', rv)
 
         rv = self.dropzone.load_js(version='5.1.0')
         self.assertIn('dropzone.min.js', rv)

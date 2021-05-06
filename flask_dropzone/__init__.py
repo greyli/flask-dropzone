@@ -12,7 +12,7 @@ from flask import Blueprint, current_app, url_for, Markup, render_template_strin
 
 from .utils import random_filename, get_url  # noqa
 
-#: defined normal file type
+# defined normal file type
 allowed_file_extensions = {
     'default': 'image/*, audio/*, video/*, text/*, application/*',
     'image': 'image/*',
@@ -134,7 +134,7 @@ Dropzone.options.myDropzone = {
                max_files_exceeded, cancelUpload, removeFile, cancelConfirmation, uploadCanceled, timeout_js))
 
     @staticmethod
-    def load_css(css_url=None, version='5.2.0'):
+    def load_css(css_url=None, version='latest'):
         """Load Dropzone's css resources with given version.
 
         .. versionadded:: 1.4.4
@@ -157,7 +157,7 @@ Dropzone.options.myDropzone = {
         return Markup(css)
 
     @staticmethod
-    def load_js(js_url=None, version='5.2.0'):
+    def load_js(js_url=None, version='latest'):
         """Load Dropzone's js resources with given version.
 
         .. versionadded:: 1.4.4
@@ -171,7 +171,7 @@ Dropzone.options.myDropzone = {
         if serve_local:
             js = '<script src="%s"></script>\n' % url_for('dropzone.static', filename=js_filename)
         else:
-            js = '<script src="https://cdn.jsdelivr.net/npm/dropzone@%s/dist/%s"></script>\n' % (version, js_filename)
+            js = '<script src="https://cdn.jsdelivr.net/npm/dropzone@%s/dist/min/%s"></script>\n' % (version, js_filename)
 
         if js_url:
             js = '<script src="%s"></script>\n' % js_url
@@ -204,10 +204,7 @@ Dropzone.options.myDropzone = {
         upload_multiple = kwargs.get('upload_multiple', current_app.config['DROPZONE_UPLOAD_MULTIPLE'])
         parallel_uploads = kwargs.get('parallel_uploads', current_app.config['DROPZONE_PARALLEL_UPLOADS'])
 
-        if upload_multiple in [True, 'true', 'True', 1]:
-            upload_multiple = 'true'
-        else:
-            upload_multiple = 'false'
+        upload_multiple = 'true' if upload_multiple in [True, 'true', 'True', 1] else 'false'
 
         size = kwargs.get('max_file_size', current_app.config['DROPZONE_MAX_FILE_SIZE'])
         param = kwargs.get('input_name', current_app.config['DROPZONE_INPUT_NAME'])
@@ -274,12 +271,8 @@ Dropzone.options.myDropzone = {
 
         allowed_file_type = kwargs.get('allowed_file_type', current_app.config['DROPZONE_ALLOWED_FILE_TYPE'])
         allowed_file_custom = kwargs.get('allowed_file_custom', current_app.config['DROPZONE_ALLOWED_FILE_CUSTOM'])
-
-        if allowed_file_custom:
-            allowed_type = allowed_file_type
-        else:
-            allowed_type = allowed_file_extensions[allowed_file_type]
-
+        allowed_type = allowed_file_type if allowed_file_custom else allowed_file_extensions[allowed_file_type]
+              
         default_message = kwargs.get('default_message', current_app.config['DROPZONE_DEFAULT_MESSAGE'])
         invalid_file_type = kwargs.get('invalid_file_type', current_app.config['DROPZONE_INVALID_FILE_TYPE'])
         file_too_big = kwargs.get('file_too_big', current_app.config['DROPZONE_FILE_TOO_BIG'])
